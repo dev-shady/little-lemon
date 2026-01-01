@@ -1,5 +1,7 @@
 package com.devshady.captone.littlelemon
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -21,20 +23,22 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.devshady.captone.littlelemon.ui.theme.CustomOutlineTextField
 import com.devshady.captone.littlelemon.ui.theme.LittleLemonTheme
 
 class Onboarding {
 
     @Composable
-    fun OnboardingComposable() {
+    fun OnboardingComposable(context: Context, navHostController: NavHostController) {
 
-//        LittleLemonTheme {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -64,7 +68,6 @@ class Onboarding {
                 Text(
                     text = "Let's get To know you",
                     color = Color.White,
-//                        fontWeight = FontWeight.Bold,
                     fontSize = 18.sp
                 )
             }
@@ -131,7 +134,34 @@ class Onboarding {
                     .fillMaxWidth(),
             )
             Button(
-                onClick = {},
+                onClick = {
+                    if (!(firstName.isBlank() || lastName.isBlank() || emailAddress.isBlank())) {
+                        Toast
+                            .makeText(context, "Registration Successful!", Toast.LENGTH_SHORT)
+                            .show()
+                        val preferences =
+                            context.getSharedPreferences("my_prefs", Context.MODE_PRIVATE)
+                        val editor = preferences.edit()
+                        editor.putString("firstName", firstName)
+                        editor.putString("lastName", lastName)
+                        editor.putString("email", emailAddress)
+                        editor.putBoolean("userLoggedIn", true)
+                        editor.apply()
+                        navHostController.navigate(Destinations.Home) {
+                            popUpTo(0) {
+                                inclusive = false
+                            }
+                        }
+                    } else {
+                        Toast
+                            .makeText(
+                                context,
+                                "Registration Unsuccessful. Please enter all the data ",
+                                Toast.LENGTH_SHORT
+                            )
+                            .show()
+                    }
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(10.dp, 5.dp, 10.dp, 5.dp),
@@ -140,19 +170,19 @@ class Onboarding {
                 Text("Register")
             }
         }
-        // }
     }
 
     @Preview
     @Composable
     fun OnboardingComposablePreview() {
+        val navController = rememberNavController()
         LittleLemonTheme {
             Scaffold(
                 modifier = Modifier.fillMaxSize(),
                 containerColor = Color.White
             )
             { innerPadding ->
-                OnboardingComposable()
+                OnboardingComposable(LocalContext.current, navController)
             }
         }
     }
