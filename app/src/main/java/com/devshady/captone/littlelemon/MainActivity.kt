@@ -12,6 +12,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
@@ -39,11 +40,7 @@ class MainActivity : ComponentActivity() {
     }
 
     val database by lazy {
-        Room.databaseBuilder(
-            applicationContext,
-            AppDatabase::class.java,
-            "app_database"
-        ).build()
+        AppDatabase.getDatabase(applicationContext)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,7 +59,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-
 
         lifecycleScope.launch(Dispatchers.IO) {
             if (database.menuDao().isEmpty()) {
@@ -90,7 +86,7 @@ class MainActivity : ComponentActivity() {
     fun MainScreen() {
         val navController = rememberNavController()
         NavigationComposable().Navigation(
-            applicationContext,
+            LocalContext.current,
             navHostController = navController
         )
     }
