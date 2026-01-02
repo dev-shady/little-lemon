@@ -44,7 +44,17 @@ fun HeaderComponent(
                 modifier = Modifier
                     .size(48.dp, height = 48.dp)
                     .clickable {
-                    navHostController?.navigate(Destinations.Profile)
+                        if (navHostController != null) {
+                            val navBackStackEntry = navHostController.currentBackStackEntry
+                            val currentRoute = navBackStackEntry?.destination?.route
+                            val expectedRoute =
+                                "com.devshady.captone.littlelemon.Destinations." + Destinations.Profile.route
+
+                            if (currentRoute != expectedRoute) {
+                                navHostController?.navigate(Destinations.Profile)
+                            }
+                        }
+
                     }
                     .align(Alignment.CenterEnd)
             )
