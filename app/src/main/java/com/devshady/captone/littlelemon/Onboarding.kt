@@ -34,6 +34,7 @@ import androidx.navigation.compose.rememberNavController
 import com.devshady.captone.littlelemon.ui.theme.CustomOutlineTextField
 import com.devshady.captone.littlelemon.ui.theme.LittleLemonTheme
 import com.devshady.captone.littlelemon.utils.PrefKeys
+import com.devshady.captone.littlelemon.utils.common.HeaderComponent
 
 class Onboarding {
 
@@ -44,19 +45,10 @@ class Onboarding {
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color.White),
-                contentAlignment = Alignment.Center,
-            ) {
-                Image(
-                    painter = painterResource(R.drawable.logo),
-                    contentDescription = "little lemon logo",
-                    modifier = Modifier.size(200.dp, 80.dp)
-                )
-            }
 
+            HeaderComponent( Modifier
+                .padding(0.dp, 16.dp, 0.dp, 8.dp)
+                .fillMaxWidth())
             Box(
                 modifier = Modifier
                     .fillMaxWidth()

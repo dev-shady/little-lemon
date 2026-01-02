@@ -29,6 +29,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.devshady.captone.littlelemon.ui.theme.LittleLemonTheme
 import com.devshady.captone.littlelemon.utils.PrefKeys
+import com.devshady.captone.littlelemon.utils.common.HeaderComponent
 
 class Profile {
 
@@ -42,25 +43,15 @@ class Profile {
             val preferences =
                 context.getSharedPreferences(PrefKeys.KEY_USER_PREFS, Context.MODE_PRIVATE)
             /*---------------Header---------------------*/
-            Box(
-                modifier = Modifier
+            HeaderComponent(
+                Modifier
                     .padding(0.dp, 16.dp, 0.dp, 0.dp)
-                    .fillMaxWidth(),
-//                    .border(1.dp,Color.Gray),
-                contentAlignment = Alignment.Center
-            ) {
-                Image(
-                    painter = painterResource(R.drawable.logo),
-                    contentDescription = "logo",
-                    modifier = Modifier.size(200.dp, height = 50.dp)
-                )
-            }
+                    .fillMaxWidth())
 
             /*----Wrapper to take all extra space available----*/
             Column(
                 modifier = Modifier
                     .weight(1f),
-//                    .border(1.dp, Color.Gray),
                 verticalArrangement = Arrangement.Center
             ) {
 

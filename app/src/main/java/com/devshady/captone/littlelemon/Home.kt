@@ -17,25 +17,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.devshady.captone.littlelemon.utils.common.HeaderComponent
 
 class Home {
 
     @Composable
     fun HomeComposable(context: Context, navHostController: NavHostController) {
         Column {
-            Box(
-                modifier = Modifier
-                    .padding(0.dp, 16.dp, 0.dp, 0.dp)
-                    .fillMaxWidth(),
-                contentAlignment = Alignment.Center
-            ) {
-                Image(
-                    painter = painterResource(R.drawable.logo),
-                    contentDescription = "logo",
-                    modifier = Modifier.size(200.dp, height = 50.dp)
-                )
-            }
-
+            HeaderComponent(
+                Modifier
+                    .padding(0.dp, 16.dp, 0.dp, 8.dp)
+                    .fillMaxWidth())
             Box(
                 modifier = Modifier
                     .padding(0.dp, 16.dp, 16.dp, 0.dp)
