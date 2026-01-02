@@ -33,6 +33,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.devshady.captone.littlelemon.ui.theme.CustomOutlineTextField
 import com.devshady.captone.littlelemon.ui.theme.LittleLemonTheme
+import com.devshady.captone.littlelemon.utils.PrefKeys
 
 class Onboarding {
 
@@ -46,14 +47,13 @@ class Onboarding {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color.White)
-                    .height(80.dp),
+                    .background(Color.White),
                 contentAlignment = Alignment.Center,
             ) {
                 Image(
                     painter = painterResource(R.drawable.logo),
                     contentDescription = "little lemon logo",
-                    modifier = Modifier.size(200.dp, 200.dp)
+                    modifier = Modifier.size(200.dp, 80.dp)
                 )
             }
 
@@ -94,7 +94,7 @@ class Onboarding {
             var lastName by remember {
                 mutableStateOf("")
             }
-            var emailAddress by remember {
+            var email by remember {
                 mutableStateOf("")
             }
             Text(
@@ -127,25 +127,28 @@ class Onboarding {
                 color = Color.DarkGray
             )
             CustomOutlineTextField(
-                value = emailAddress,
-                onValueChange = { emailAddress = it },
+                value = email,
+                onValueChange = { email = it },
                 modifier = Modifier
                     .padding(10.dp, 5.dp, 10.dp, 5.dp)
                     .fillMaxWidth(),
             )
             Button(
                 onClick = {
-                    if (!(firstName.isBlank() || lastName.isBlank() || emailAddress.isBlank())) {
+                    if (!(firstName.isBlank() || lastName.isBlank() || email.isBlank())) {
                         Toast
                             .makeText(context, "Registration Successful!", Toast.LENGTH_SHORT)
                             .show()
                         val preferences =
-                            context.getSharedPreferences("my_prefs", Context.MODE_PRIVATE)
+                            context.getSharedPreferences(
+                                PrefKeys.KEY_USER_PREFS,
+                                Context.MODE_PRIVATE
+                            )
                         val editor = preferences.edit()
-                        editor.putString("firstName", firstName)
-                        editor.putString("lastName", lastName)
-                        editor.putString("email", emailAddress)
-                        editor.putBoolean("userLoggedIn", true)
+                        editor.putString(PrefKeys.KEY_FIRST_NAME, firstName)
+                        editor.putString(PrefKeys.KEY_LAST_NAME, lastName)
+                        editor.putString(PrefKeys.KEY_EMAIL, email)
+                        editor.putBoolean(PrefKeys.KEY_USER_LOGGED_IN, true)
                         editor.apply()
                         navHostController.navigate(Destinations.Home) {
                             popUpTo(0) {
