@@ -49,16 +49,49 @@ import com.devshady.captone.littlelemon.ui.theme.CustomOutlineTextField
 import com.devshady.captone.littlelemon.ui.theme.DarkGreen
 import com.devshady.captone.littlelemon.ui.theme.LittleLemonTheme
 import com.devshady.captone.littlelemon.ui.theme.Yellow
+import com.devshady.captone.littlelemon.utils.HeroSectionDetails
 import com.devshady.captone.littlelemon.utils.common.HeaderComponent
 
 class Home {
 
     @Composable
     fun HomeComposable(context: Context, navHostController: NavHostController) {
-        val menuItemsLive = remember {
+        val menuItemsLiveData = remember {
             AppDatabase.getDatabase(context).menuDao().getAll()
         }
-        val menuItems by menuItemsLive.observeAsState(emptyList())
+        val menuItems by menuItemsLiveData.observeAsState(emptyList())
+        var menuItemsFiltered by remember {
+            mutableStateOf(emptyList<MenuItemRoom>())
+        }
+
+        // name of category pill selected
+        var filteredCategory by remember {
+            mutableStateOf("")
+        }
+
+        // If some category pill is selected, then use that to filter menu
+        menuItemsFiltered = if (filteredCategory.isEmpty()) {
+            menuItems
+        } else {
+            menuItems.filter {
+                it.category.lowercase().equals(filteredCategory.lowercase())
+            }
+        }
+
+        // search query from search box
+        var searchPhrase by remember {
+            mutableStateOf("")
+        }
+
+        // If some search query is entered, then use that as well to filter menu
+        menuItemsFiltered = if (searchPhrase.isEmpty()) {
+            menuItemsFiltered
+        } else {
+            menuItemsFiltered.filter {
+                it.title.contains(searchPhrase, ignoreCase = true)
+            }
+        }
+
         Column {
             HeaderComponent(
                 Modifier
@@ -67,14 +100,21 @@ class Home {
                 showProfilePic = true,
                 navHostController = navHostController
             )
-            Hero()
-            CategoryFilters(menuItems)
-            MenuItems(menuItems)
+            Hero({ searchKey ->
+                searchPhrase = searchKey
+            })
+            CategoryFilters(menuItems, { category ->
+                filteredCategory = category
+            })
+            MenuItems(menuItemsFiltered)
         }
     }
 
     @Composable
-    fun CategoryFilters(items: List<MenuItemRoom>) {
+    fun CategoryFilters(items: List<MenuItemRoom>, filterByCategory: (String) -> Unit) {
+        var selectedCategory by remember {
+            mutableStateOf("")
+        }
         Column(
             Modifier
                 .padding(16.dp)
@@ -88,6 +128,8 @@ class Home {
                 fontSize = 24.sp
             )
             Spacer(Modifier.height(8.dp))
+
+            // use set to remove duplicate categories
             val categories = mutableSetOf<String>()
             for (item in items) {
                 categories.add(item.category)
@@ -103,13 +145,32 @@ class Home {
                     Box(
                         modifier = Modifier
                             .padding(4.dp)
-                            .background(Cloud, shape = RoundedCornerShape(50.dp))
-                            .padding(12.dp, 8.dp, 12.dp, 8.dp),
+                            .background(
+                                color = if (category.equals(selectedCategory)) {
+                                    DarkGreen
+                                } else {
+                                    Cloud
+                                },
+                                shape = RoundedCornerShape(50.dp)
+                            )
+                            .padding(12.dp, 8.dp, 12.dp, 8.dp)
+                            .clickable {
+                                if (category.equals(selectedCategory)) {
+                                    selectedCategory = ""
+                                } else {
+                                    selectedCategory = category
+                                }
+                                filterByCategory(selectedCategory)
+                            },
 
                         ) {
                         Text(
                             text = formattedCategory,
-                            color = Color.DarkGray,
+                            color = if (category.equals(selectedCategory)) {
+                                Yellow
+                            } else {
+                                Color.DarkGray
+                            },
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold,
                         )
@@ -185,7 +246,7 @@ class Home {
     }
 
     @Composable
-    fun Hero() {
+    fun Hero(filterBySearch: (String) -> Unit) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -193,7 +254,7 @@ class Home {
                 .padding(16.dp)
         ) {
             Text(
-                text = "Little Lemon",
+                text = HeroSectionDetails.TITLE,
                 fontSize = 30.sp,
                 letterSpacing = 2.sp,
                 color = Yellow
@@ -208,13 +269,13 @@ class Home {
                         .fillMaxWidth(0.60f)
                 ) {
                     Text(
-                        text = "Chicago",
+                        text = HeroSectionDetails.CITY,
                         fontSize = 24.sp,
                         color = Cloud
                     )
                     Spacer(Modifier.height(20.dp))
                     Text(
-                        text = "We are a family-owned Mediterranean restaurant, focused on traditional recipes served with a modern twist",
+                        text = HeroSectionDetails.DESCRIPTION,
                         fontSize = 16.sp,
                         color = Cloud
                     )
@@ -225,9 +286,6 @@ class Home {
                     contentDescription = "logo",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .clickable {
-//                navHostController.navigate(Destinations.Profile)
-                        }
                         .width(200.dp)
                         .fillMaxHeight()
                         .clip(RoundedCornerShape(12.dp))
@@ -239,7 +297,11 @@ class Home {
             }
             CustomOutlineTextField(
                 value = searchPhrase,
-                onValueChange = { searchPhrase = it },
+                onValueChange = {
+                    searchPhrase = it
+                    //debounce logic needed ?
+                    filterBySearch(searchPhrase)
+                },
                 placeHolder = "Enter search phrase",
                 modifier = Modifier
                     .padding(0.dp, 16.dp, 0.dp, 8.dp)
