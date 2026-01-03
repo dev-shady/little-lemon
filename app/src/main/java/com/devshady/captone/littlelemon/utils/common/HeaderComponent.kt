@@ -40,7 +40,7 @@ fun HeaderComponent(
 
         if (showProfilePic) {
             Image(
-                painter = painterResource(R.drawable.profile_face),
+                painter = painterResource(R.drawable.profile),
                 contentDescription = "logo",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
