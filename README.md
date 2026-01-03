@@ -8,9 +8,10 @@ Food menu is retrieved from https://raw.githubusercontent.com/Meta-Mobile-Develo
 1. Save user details in **shared preferences** for persistant storage.
 2. Use **Ktor Client** lib to download network data.
 3. Store network data in **Room** database for persistancy.
-4. UI powered through LiveData from Room DB.
-5. Filter Menu items using **Search Query**.
-6. Filter Menu items using **category pills**.
+4. UI powered through **LiveData** from Room DB.
+5. Use **Glide** to load remote images.
+6. Filter Menu items using **Search Query**.
+7. Filter Menu items using **category pills**.
          
 
 ### Screens:
@@ -34,16 +35,20 @@ Food menu is retrieved from https://raw.githubusercontent.com/Meta-Mobile-Develo
    - It has logout button to clear user details. It takes you back to Onboarding screen.
 
 
-**Home:**
-
-<img width="720" height="1280" alt="Screenshot_20260103_174900" src="https://github.com/user-attachments/assets/6b57c69b-afaa-4596-8069-b12488082f15" />
+## **Home:**
 
 
-**Profile:**
-
-<img width="720" height="1280" alt="Screenshot_20260103_175224" src="https://github.com/user-attachments/assets/54e9591b-3290-4ec4-9d53-3629fd10d54c" />
-
-**Onboarding:**
+<img width="720" height="1280" alt="Screenshot_20260103_195038" src="https://github.com/user-attachments/assets/d9936e7a-e0eb-4e80-a8c5-de9bc63dfc39" />
 
 
-<img width="720" height="1280" alt="Screenshot_20260103_175232" src="https://github.com/user-attachments/assets/6269ad5e-2f54-4cb1-9a53-7ddc57694fac" />
+## **Profile:**
+
+<img width="720" height="1280" alt="Screenshot_20260103_195054" src="https://github.com/user-attachments/assets/5d74b6e9-761d-477b-bf3b-ae0daa6e4513" />
+
+
+## **Onboarding:**
+
+
+<img width="720" height="1280" alt="Screenshot_20260103_194957" src="https://github.com/user-attachments/assets/4e5f5de5-59a2-4db2-8903-d9c226c607a5" />
+
+
