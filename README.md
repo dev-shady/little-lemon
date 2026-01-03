@@ -24,7 +24,7 @@ Food menu is retrieved from https://raw.githubusercontent.com/Meta-Mobile-Develo
 2. **Home Screen**:
    - It contains Header, Hero, Category Pilss and Menu section.
    - **Header**: It contains brand logo and profile picture. Click on profile pic to navigate to Profile Screen.
-   - **Hero**: It contains Resturant details i.e name, description and a photo and a search bar.
+   - **Hero**: It contains Resturant details i.e name, description and a photo. It also has a search bar.
    - **Category pills**: It allows menu filtering based on category like starters, deserts etc.
    - **Menu**:
      -  It contains the full food menu retrieved from https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/menu.json
@@ -50,5 +50,10 @@ Food menu is retrieved from https://raw.githubusercontent.com/Meta-Mobile-Develo
 
 
 <img width="720" height="1280" alt="Screenshot_20260103_194957" src="https://github.com/user-attachments/assets/4e5f5de5-59a2-4db2-8903-d9c226c607a5" />
+
+## **Filter Using Search Query + Category Pill together** 
+
+
+<img width="720" height="1280" alt="Screenshot_20260103_200304" src="https://github.com/user-attachments/assets/a8e7974e-1355-4c7a-95ae-7ebf44d95671" />
 
 
