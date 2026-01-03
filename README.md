@@ -1,6 +1,25 @@
-**Meta Android App Capstone Project**
 
-**App entry point:** MainActivity.kt
+# **Meta Android App Capstone Project**
+
+### KeyFeatures:
+
+1. Onoarding Screen:
+   - User need to enter first name, last name and email address for registration.
+   - Upon registration, User will be directed to Home screen.
+   - The User Details will be stored in Shared Preferences.
+
+2. Home Screen:
+   - It contains Header, Hero, Category Pilss and Menu section.
+   - Header: It contains brand logo and profile picture
+   - Hero: It contains Resturant details i.e name, description and a photo and a search bar.
+   - Category pills: It allows menu filtering based on category like starters, deserts etc.
+   - Menu:
+     -  It contains the full food menu retrieved from https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/menu.json
+     -  **Note: 2nd and 3rd items in JSON response have image urls that give blank picture.**
+     -  The data from URL is downloaded using **KTOR client library** and stored in **Room database**.
+3. Profile:
+   - It shows the first name , last name and email of the User that was entered during onboarding.
+   - It has logout button to clear user details. It takes you back to Onboarding screen.
 
 Screens:
 
