@@ -53,4 +53,7 @@ interface MenuDao {
 
     @Query("SELECT (SELECT COUNT(*) FROM order_menu) == 0")
     fun isEmpty(): Boolean
+
+    @Query("DELETE FROM order_menu")
+    fun deleteAll()
 }

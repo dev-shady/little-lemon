@@ -1,7 +1,6 @@
 package com.devshady.captone.littlelemon
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -16,7 +15,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
-import androidx.room.Room
 import com.devshady.captone.littlelemon.database.AppDatabase
 import com.devshady.captone.littlelemon.network.Menu
 import com.devshady.captone.littlelemon.network.MenuItem
@@ -72,14 +70,12 @@ class MainActivity : ComponentActivity() {
         val URL =
             "https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/menu.json"
         val menu: Menu = httpClient.get(URL).body()
-        Log.e("aamku: ", menu.toString())
         return menu?.menuItems ?: emptyList()
     }
 
     suspend fun saveToDatabase(menuItems: List<MenuItem>) {
         val menuItemsRoom = menuItems.map { it.toMenuItemRoom() }
         database.menuDao().insertAll(menuItemsRoom)
-        Log.e("aamku: ", "insertAll successful")
     }
 
     @Composable

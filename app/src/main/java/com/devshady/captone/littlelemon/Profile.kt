@@ -129,7 +129,6 @@ class Profile {
             }
 
             /*--------------Logout Button----------------------*/
-
             Button(
                 onClick = {
                     preferences.edit().clear().apply()

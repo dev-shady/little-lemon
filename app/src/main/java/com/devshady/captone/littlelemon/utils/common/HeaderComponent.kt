@@ -6,9 +6,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,11 +40,12 @@ fun HeaderComponent(
 
         if (showProfilePic) {
             Image(
-                painter = painterResource(R.drawable.profile),
+                painter = painterResource(R.drawable.profile_face),
                 contentDescription = "logo",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size(48.dp, height = 48.dp)
+                    .size(48.dp)
+                    .clip(CircleShape)
                     .clickable {
                         if (navHostController != null) {
                             val navBackStackEntry = navHostController.currentBackStackEntry

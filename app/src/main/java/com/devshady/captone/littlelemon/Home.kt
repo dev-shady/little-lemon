@@ -60,9 +60,6 @@ class Home {
             AppDatabase.getDatabase(context).menuDao().getAll()
         }
         val menuItems by menuItemsLiveData.observeAsState(emptyList())
-        var menuItemsFiltered by remember {
-            mutableStateOf(emptyList<MenuItemRoom>())
-        }
 
         // name of category pill selected
         var filteredCategory by remember {
@@ -70,7 +67,7 @@ class Home {
         }
 
         // If some category pill is selected, then use that to filter menu
-        menuItemsFiltered = if (filteredCategory.isEmpty()) {
+        var menuItemsFiltered = if (filteredCategory.isEmpty()) {
             menuItems
         } else {
             menuItems.filter {
