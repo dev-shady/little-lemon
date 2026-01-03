@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -18,12 +19,15 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -41,6 +45,7 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.devshady.captone.littlelemon.database.AppDatabase
 import com.devshady.captone.littlelemon.database.MenuItemRoom
 import com.devshady.captone.littlelemon.ui.theme.Cloud
+import com.devshady.captone.littlelemon.ui.theme.CustomOutlineTextField
 import com.devshady.captone.littlelemon.ui.theme.DarkGreen
 import com.devshady.captone.littlelemon.ui.theme.LittleLemonTheme
 import com.devshady.captone.littlelemon.ui.theme.Yellow
@@ -50,7 +55,7 @@ class Home {
 
     @Composable
     fun HomeComposable(context: Context, navHostController: NavHostController) {
-        var menuItemsLive = remember {
+        val menuItemsLive = remember {
             AppDatabase.getDatabase(context).menuDao().getAll()
         }
         val menuItems by menuItemsLive.observeAsState(emptyList())
@@ -63,8 +68,60 @@ class Home {
                 navHostController = navHostController
             )
             Hero()
-
+            CategoryFilters(menuItems)
             MenuItems(menuItems)
+        }
+    }
+
+    @Composable
+    fun CategoryFilters(items: List<MenuItemRoom>) {
+        Column(
+            Modifier
+                .padding(16.dp)
+                .fillMaxWidth()
+        ) {
+            Spacer(Modifier.height(16.dp))
+            Text(
+                text = "Order For Delivery!",
+                color = Color.Black,
+                fontWeight = FontWeight.Bold,
+                fontSize = 24.sp
+            )
+            Spacer(Modifier.height(8.dp))
+            val categories = mutableSetOf<String>()
+            for (item in items) {
+                categories.add(item.category)
+            }
+
+            val scrollState = rememberScrollState()
+            Row(
+                Modifier
+                    .horizontalScroll(scrollState)
+            ) {
+                for (category in categories) {
+                    val formattedCategory = category.replaceFirstChar { it.uppercase() }
+                    Box(
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .background(Cloud, shape = RoundedCornerShape(50.dp))
+                            .padding(12.dp, 8.dp, 12.dp, 8.dp),
+
+                        ) {
+                        Text(
+                            text = formattedCategory,
+                            color = Color.DarkGray,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold,
+                        )
+                    }
+                    Spacer(Modifier.width(12.dp))
+                }
+            }
+            Spacer(Modifier.height(24.dp))
+            HorizontalDivider(
+                thickness = 1.dp,
+                color = Color.LightGray
+            )
         }
     }
 
@@ -141,10 +198,10 @@ class Home {
                 letterSpacing = 2.sp,
                 color = Yellow
             )
+            Spacer(Modifier.height(8.dp))
             Row(
                 modifier = Modifier
                     .height(IntrinsicSize.Min)
-
             ) {
                 Column(
                     modifier = Modifier
@@ -177,6 +234,18 @@ class Home {
                 )
 
             }
+            var searchPhrase by remember {
+                mutableStateOf("")
+            }
+            CustomOutlineTextField(
+                value = searchPhrase,
+                onValueChange = { searchPhrase = it },
+                placeHolder = "Enter search phrase",
+                modifier = Modifier
+                    .padding(0.dp, 16.dp, 0.dp, 8.dp)
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(8.dp))
+            )
         }
     }
 
